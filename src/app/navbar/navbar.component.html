@@ -1,0 +1,32 @@
+
+<div class="navBar">
+    <div id="logo"></div>
+    <div id="heading"><a routerLink="/">ChatPop</a></div>
+    <div class="links">
+        <span>
+            <a *ngIf="!(user|async)" routerLink="/login">Login</a>
+        </span>
+        <span>
+            <a *ngIf="!(user|async)" routerLink="/signup">Sign Up</a>
+        </span>
+        <span>
+                <span *ngIf="(user|async)" >Hola, {{user.userName}}!</span>
+        </span>
+        <span>
+            <a *ngIf="(user|async)" href="#" (click)="logout()">Logout</a>
+        </span>
+    </div>
+</div>
+
+<!--
+
+        <span>
+            <a *ngIf="!(user|async)" routerLink="/signup">Sign Up</a>
+        </span>
+        <span>
+            
+        </span>
+        <span>
+            <a *ngIf="(user|async)" href="#" (click)="logout()">Logout</a>
+        </span>
+-->

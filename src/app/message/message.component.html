@@ -1,0 +1,7 @@
+<div class="messageContainer" [ngClass]="getClass()">
+  <span *ngIf="!mineAbove && getClassTail() == 'tail-container-in'" [ngClass]="getClassTail()"></span>
+  <div class="messageContent">
+    {{ messageContent }}
+  </div>
+  <span *ngIf="!mineAbove && getClassTail() == 'tail-container-out'" [ngClass]="getClassTail()"></span>
+</div>

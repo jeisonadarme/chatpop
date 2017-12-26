@@ -1,0 +1,5 @@
+<div class="userList">
+    <div *ngFor="let user of users | async" class="message">
+        <app-user-item [user]=user></app-user-item>
+    </div>
+  </div>
