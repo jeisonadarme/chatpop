@@ -1,5 +1,5 @@
 
-<div class="userItem">
+<div class="userItem" (click)="updateFeed(user.id)" [ngClass]="{active: isActive(user.id)}">
     <span class="status" [ngClass]=(user.status)>
     </span>
     <span class="userName">

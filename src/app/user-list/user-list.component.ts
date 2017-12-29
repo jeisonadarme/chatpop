@@ -13,7 +13,6 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     this.auth.currentUserObservable.subscribe(user => {
-      console.log("this is important dude", user);
       this.users = this.userService.getCurrentUsers(user.uid);
     })
   }

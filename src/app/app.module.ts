@@ -23,6 +23,7 @@ import { SigupFormComponent } from './sigup-form/sigup-form.component';
 import { AuthService } from './services/auth.service';
 import { ChatService } from './services/chat.service';
 import { UsersService } from './services/users.service';
+import { ChatMiddlewareService } from './services/chat-middleware.service';
 
 import { appRoutes } from './../routes';
 import { environment } from './../environments/environment';
@@ -52,7 +53,8 @@ import { environment } from './../environments/environment';
   providers: [
     AuthService, 
     ChatService ,
-    UsersService
+    UsersService,
+    ChatMiddlewareService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,3 +1,4 @@
+import { Chat } from './../models/chat.model';
 import { ChatMessage } from './../models/chat-message.model';
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
@@ -12,6 +13,8 @@ import 'rxjs/add/operator/take';
 export class ChatService {
   user: any;
   chatMessages: AngularFirestoreCollection<ChatMessage>;
+
+  chatCollection: AngularFirestoreCollection<Chat>;
   chatMessage: ChatMessage;
   userName: Observable<string>;
   mineAbove: boolean = false;
@@ -20,13 +23,41 @@ export class ChatService {
     this.user = auth.currentUser;
   }
 
-  sendMessage(msg: string){
-    this.getLastMessage().subscribe(val => {
+  getChat(idOne: string, idTwo: string): Promise<any> {
+    //take just a few characters of the user ids
+    let compouseId = idOne.substring(0, 7) + idTwo.substring(0, 7);
+    // do a reference to the document
+    let chatRef = this.db.collection('chats').doc(compouseId);
+    //get the document
+    return chatRef.ref.get()
+      .then((docSnapshot) => {
+        //if exist return de id
+        if (docSnapshot.exists) {
+          return { id: compouseId } as Chat;
+        } else { // swap the id and search
+          compouseId = idTwo.substring(0, 7) + idOne.substring(0, 7);
+          // do a reference to the document
+          const usersRef2 = this.db.collection('chats').doc(compouseId);
+          return usersRef2.ref.get()
+            .then((docSnapshot) => {
+              //if exist return de id
+              if (docSnapshot.exists) {
+                return { id: compouseId } as Chat;
+              } else { // create the chat if not exist
+                this.db.collection('chats').doc(compouseId).set({ id: compouseId })
+                return  { id: compouseId } as Chat;
+              }
+            });
+        }
+      }).catch(err => console.log(err));
+  }
+
+  sendMessage(msg: string, chatId: string) {
+    this.getLastMessage(chatId).subscribe(val => {
       const timestamp = this.getTimeStamp();
-      this.chatMessages = this.getCollection();
-      console.log(val, this.auth.currentUser.email);
-      if(val[0] && this.auth.currentUser.email === val[0].email) this.mineAbove = true;
-        else this.mineAbove = false;
+      this.chatMessages = this.db.collection("chats").doc(chatId).collection("messages");
+      if (val[0] && this.auth.currentUser.email === val[0].email) this.mineAbove = true;
+      else this.mineAbove = false;
       this.chatMessages.add({
         message: msg,
         timeSent: new Date(),
@@ -35,17 +66,16 @@ export class ChatService {
         mineAbove: this.mineAbove
       });
     });
-    console.log("send message");
   }
 
-  get getMessages(): Observable<ChatMessage[]>{
-    return this.getCollection().snapshotChanges()
+  getMessages(chatId: string): Observable<ChatMessage[]> {
+    return this.db.collection("chats").doc(chatId).collection("messages", ref => ref.orderBy("timeSent", "asc")).snapshotChanges()
       .map(messages => {
         return messages.map(msg => {
           const data = msg.payload.doc.data() as ChatMessage;
           const id = msg.payload.doc.id;
           return {
-            id, 
+            id,
             message: data.message,
             email: data.email,
             timeSent: data.timeSent,
@@ -55,16 +85,16 @@ export class ChatService {
         })
       });
   }
-  
-  getLastMessage(): Observable<any> {
-    var collection = this.db.collection<ChatMessage>("messages", ref => ref.orderBy("timeSent", "desc").limit(1));  
+
+  getLastMessage(chatId: string): Observable<any> {
+    var collection = this.db.collection<Chat>("chats").doc(chatId).collection<ChatMessage>("messages", ref => ref.orderBy("timeSent", "desc").limit(1));
     return collection.snapshotChanges()
       .map(messages => {
         return messages.map(msg => {
           const data = msg.payload.doc.data() as ChatMessage;
           const id = msg.payload.doc.id;
           return {
-            id, 
+            id,
             message: data.message,
             email: data.email,
             timeSent: data.timeSent,
@@ -76,15 +106,15 @@ export class ChatService {
   }
 
   private getTimeStamp() {
-      const now = new Date();
-      const date = `${now.getFullYear()}/${now.getUTCMonth() + 1}/${now.getUTCDate}`;
-      const time = `${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds}`;
+    const now = new Date();
+    const date = `${now.getFullYear()}/${now.getUTCMonth() + 1}/${now.getUTCDate}`;
+    const time = `${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds}`;
 
-      return (`${date} ${time}`);
+    return (`${date} ${time}`);
   }
 
   private getCollection(): AngularFirestoreCollection<ChatMessage> {
     return this.db
-      .collection<ChatMessage>("messages", ref => ref.orderBy("timeSent", "asc").limit(15));   
+      .collection<ChatMessage>("messages", ref => ref.orderBy("timeSent", "asc").limit(15));
   }
 }

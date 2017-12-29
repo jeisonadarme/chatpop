@@ -26,7 +26,6 @@ export class SigupFormComponent {
     .then(resolve => this.router.navigate(['chat']))
     .catch(err => { 
       this.errorMsg = err.message;
-      console.log(err);
     })
   }
 }

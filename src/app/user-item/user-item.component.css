@@ -1,37 +1,35 @@
-.userItem{
+.userItem {
     height: auto;
     padding: 10px;
-    width: 90%;
-    margin-left: 4%;
-    margin-top: 10px;
-    border-radius: 1px;
+    width: 100%;
+    margin-top: 4px;
     align-items:flex-start;
     background-color: #201835;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     color: #A098A5;
-    border-radius: 8px;
     transition: ease-in 0.2s;
+    cursor: pointer;
 }
 
-.userItem:hover{
+.userItem:hover {
     background-color: #453968;
     color: #ddd;
     transition: ease-in 0.1s;
 }
 
-.online{
+.online {
     background-color: #0FA;
 }
 
-.busy{
+.busy {
     background-color: #FB0;
 }
 
-.offline{
+.offline {
     background-color: #888;
 }
 
-.status{
+.status {
     border: 1px solid black;
     display: inline-block;
     min-width: 10px;
@@ -40,7 +38,12 @@
     margin: 10px 12px 0px 10px;
 }
 
-.userName{
+.userName {
     display: inline-block;
 }
 
+.active {
+    background-color: #453968;
+    color: #ddd;
+    transition: ease-in 0.1s;
+}

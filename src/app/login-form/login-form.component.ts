@@ -16,7 +16,6 @@ export class LoginFormComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   login() {
-    console.log('login() called from login-form component');
     this.authService.emailLogin(this.email, this.password)
     .then(resolve => this.router.navigate(['chat']))
     .catch(error => this.errorMsg = error.message);
