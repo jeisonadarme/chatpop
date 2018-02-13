@@ -1,3 +1,4 @@
+import { UploadService } from './services/upload.service';
 /** Modules */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -27,6 +28,9 @@ import { ChatMiddlewareService } from './services/chat-middleware.service';
 
 import { appRoutes } from './../routes';
 import { environment } from './../environments/environment';
+import { FileDropDirective } from './directives/file-drop.directive';
+import { ContentMediaComponent } from './content-media/content-media.component';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +43,9 @@ import { environment } from './../environments/environment';
     NavbarComponent,
     UserListComponent,
     UserItemComponent,
-    SigupFormComponent
+    SigupFormComponent,
+    FileDropDirective,
+    ContentMediaComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +60,8 @@ import { environment } from './../environments/environment';
     AuthService, 
     ChatService ,
     UsersService,
-    ChatMiddlewareService
+    ChatMiddlewareService,
+    UploadService
   ],
   bootstrap: [AppComponent]
 })

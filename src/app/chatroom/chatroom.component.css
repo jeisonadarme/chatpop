@@ -39,3 +39,7 @@
 app-user-list {
     width: 100%;
 }
+
+.activateDrop {
+     border: 3px solid green;
+}

@@ -1,0 +1,22 @@
+.img-media {
+    width: 17em;
+}
+
+.image-thumb {
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+}
+
+.image-thumb-body {
+    -webkit-flex: none;
+    flex: none;
+    -webkit-transition: -webkit-filter .16s linear;
+}

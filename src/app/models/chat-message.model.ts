@@ -5,4 +5,8 @@
     message?: string;
     timeSent: Date = new Date();
     mineAbove?: boolean;
+    urlContent?: string;
+    contentType?: string;
+    size?: number;
+    hasMedia: boolean;
  }

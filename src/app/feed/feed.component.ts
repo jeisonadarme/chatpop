@@ -5,6 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { ChatService } from './../services/chat.service';
 import { Component, OnInit, OnChanges } from '@angular/core';
 
+import * as _ from 'lodash';
+import 'firebase/storage'
+
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
@@ -14,7 +17,9 @@ export class FeedComponent implements OnInit, OnChanges {
   feed: Observable<ChatMessage[]> = null;;
   userId: string;
 
-  constructor(private chat: ChatService, private chatMiddlewareService: ChatMiddlewareService, private authService: AuthService) { }
+  constructor(private chat: ChatService, 
+              private chatMiddlewareService: ChatMiddlewareService, 
+              private authService: AuthService) { }
 
   ngOnInit() {
     //activates when a user in the list is select

@@ -17,6 +17,9 @@ export class MessageComponent implements OnInit {
   messageContent: string;
   timeStamp: Date = new Date();
   mineAbove: boolean = false;
+  urlContent: string = "";
+  contentType: string = "";
+  hasMedia: boolean;
   // isOwnMessage: boolean
   constructor(public auth: AuthService) { }
 
@@ -27,6 +30,11 @@ export class MessageComponent implements OnInit {
     this.userName = chatMessage.userName;
     this.currentEmail = this.auth.currentUser.email;
     this.mineAbove = chatMessage.mineAbove;
+    this.hasMedia = chatMessage.hasMedia;
+    if(this.hasMedia){
+      this.contentType = chatMessage.contentType;
+      this.urlContent = chatMessage.urlContent;
+    }
   }
 
   getClass() {
@@ -47,5 +55,9 @@ export class MessageComponent implements OnInit {
   getClassTail() {
     if(this.userEmail === this.auth.currentUser.email) return "tail-container-out";
       else return "tail-container-in";
+  }
+
+  getContentClass(){
+    return this.hasMedia ? "messageContentMedia" : "messageContent";
   }
 }

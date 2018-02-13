@@ -63,7 +63,28 @@ export class ChatService {
         timeSent: new Date(),
         userName: this.auth.currentUserDisplayName,
         email: this.auth.authState.email,
-        mineAbove: this.mineAbove
+        mineAbove: this.mineAbove,
+        hasMedia: false
+      });
+    });
+  }
+
+  sendMedia(url: string, contentType: string, size: number, chatId: string) {
+    this.getLastMessage(chatId).subscribe(val => {
+      const timestamp = this.getTimeStamp();
+      this.chatMessages = this.db.collection("chats").doc(chatId).collection("messages");
+      if (val[0] && this.auth.currentUser.email === val[0].email) this.mineAbove = true;
+      else this.mineAbove = false;
+      this.chatMessages.add({
+        message: "",
+        urlContent: url,
+        contentType: contentType,
+        timeSent: new Date(),
+        userName: this.auth.currentUserDisplayName,
+        email: this.auth.authState.email,
+        mineAbove: this.mineAbove,
+        size: size,
+        hasMedia: true
       });
     });
   }
@@ -80,7 +101,10 @@ export class ChatService {
             email: data.email,
             timeSent: data.timeSent,
             userName: data.userName,
-            mineAbove: data.mineAbove
+            mineAbove: data.mineAbove,
+            hasMedia: data.hasMedia,
+            urlContent: data.urlContent,
+            contentType: data.contentType
           }
         })
       });
